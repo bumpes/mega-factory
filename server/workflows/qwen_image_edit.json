@@ -3,14 +3,14 @@
     "class_type": "CLIPTextEncode",
     "inputs": {
       "text": "POSITIVE_PROMPT_PLACEHOLDER",
-      "clip": ["11", 0]
+      "clip": ["12", 0]
     }
   },
   "4": {
     "class_type": "CLIPTextEncode",
     "inputs": {
       "text": "lowres, bad quality, blurry",
-      "clip": ["11", 0]
+      "clip": ["12", 0]
     }
   },
   "5": {
@@ -40,7 +40,7 @@
     "class_type": "VAEDecode",
     "inputs": {
       "samples": ["7", 0],
-      "vae": ["11", 1]
+      "vae": ["13", 0]
     }
   },
   "9": {
@@ -51,9 +51,23 @@
     }
   },
   "11": {
-    "class_type": "CheckpointLoaderSimple",
+    "class_type": "UNETLoader",
     "inputs": {
-      "ckpt_name": "qwen_image_edit_2511_bf16.safetensors"
+      "unet_name": "qwen_image_edit_2511_bf16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "12": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "type": "qwen_image"
+    }
+  },
+  "13": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
     }
   }
 }

@@ -35,11 +35,13 @@ describe('P3 - ComfyUI service', () => {
       expect(keys).toContain('11');
     });
 
-    it('has a CheckpointLoaderSimple node', () => {
+    it('has separate UNETLoader, CLIPLoader, and VAELoader nodes', () => {
       const template = loadWorkflowTemplate();
       const values = Object.values(template) as Array<{ class_type: string }>;
-      const loader = values.find((n) => n.class_type === 'CheckpointLoaderSimple');
-      expect(loader).toBeTruthy();
+      const types = values.map((n) => n.class_type);
+      expect(types).toContain('UNETLoader');
+      expect(types).toContain('CLIPLoader');
+      expect(types).toContain('VAELoader');
     });
 
     it('has placeholders for prompt, width, height, seed', () => {
