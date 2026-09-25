@@ -19,7 +19,7 @@ const DEFAULTS: Settings = {
   llm_api_key: '',
   llm_model: 'qwen-max',
   llm_deep_think: true,
-  output_dir: './storage/输出',
+  output_dir: 'C:\\Users\\junai\\图片',
   reference_dir: './storage/参考图库',
   default_count: 3,
   default_resolution: '1024x1024',

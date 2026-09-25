@@ -74,11 +74,11 @@ describe('P3 - ComfyUI service', () => {
       const seedNode = values.find((n) => n.inputs?.seed === 42);
       expect(seedNode).toBeTruthy();
 
-      const ksampler = values.find((n) => n.inputs?.steps === 30);
+      const ksampler = values.find((n) => n.inputs?.steps === 20);
       expect(ksampler).toBeTruthy();
-      expect(ksampler!.inputs.model).toEqual(['11', 0]);
+      expect(ksampler!.inputs.model).toEqual(['1', 0]);
       expect(ksampler!.inputs.positive).toEqual(['3', 0]);
-      expect(ksampler!.inputs.negative).toEqual(['4', 0]);
+      expect(ksampler!.inputs.negative).toEqual(['9', 0]);
     });
 
     it('does not mutate the original template', () => {
