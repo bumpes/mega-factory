@@ -26,7 +26,6 @@ if (fs.existsSync(clientDist)) {
   await fastify.register(fastifyStatic, {
     root: clientDist,
     prefix: '/',
-    wildcard: false,
   });
 }
 
