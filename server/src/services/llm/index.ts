@@ -16,6 +16,6 @@ export function createLLMProvider(): LLMProvider {
     case 'qwen':
       return new QwenProvider(apiKey, model);
     default:
-      return new YuanbaoProvider(apiKey, model);
+      return new QwenProvider(apiKey, model);
   }
 }

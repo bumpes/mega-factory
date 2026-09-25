@@ -20,15 +20,15 @@ describe('P1 - LLM Abstraction', () => {
     delete process.env.DB_PATH;
   });
 
-  it('createLLMProvider returns yuanbao by default', () => {
-    const provider = createLLMProvider();
-    expect(provider.name).toBe('yuanbao');
-  });
-
-  it('createLLMProvider returns qwen when configured', () => {
-    putSetting('llm_provider', 'qwen');
+  it('createLLMProvider returns qwen by default', () => {
     const provider = createLLMProvider();
     expect(provider.name).toBe('qwen');
+  });
+
+  it('createLLMProvider returns yuanbao when configured', () => {
+    putSetting('llm_provider', 'yuanbao');
+    const provider = createLLMProvider();
+    expect(provider.name).toBe('yuanbao');
   });
 
   it('testConnection returns error when no API key', async () => {

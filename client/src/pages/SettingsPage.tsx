@@ -156,8 +156,8 @@ export default function SettingsPage() {
             onChange={(e) => handleChange('llm_provider', e.target.value)}
             className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white"
           >
-            <option value="yuanbao">元宝深度思考</option>
             <option value="qwen">通义千问</option>
+            <option value="yuanbao">元宝深度思考</option>
           </select>
         </div>
         <div>

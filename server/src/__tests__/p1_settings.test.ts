@@ -27,7 +27,7 @@ describe('P1 - Settings', () => {
     expect(settings.comfyui_url).toBe('http://127.0.0.1:8188');
     expect(settings.default_count).toBe(3);
     expect(settings.default_resolution).toBe('1024x1024');
-    expect(settings.llm_provider).toBe('yuanbao');
+    expect(settings.llm_provider).toBe('qwen');
   });
 
   it('putSetting persists and getSetting retrieves', () => {

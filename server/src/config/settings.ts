@@ -15,9 +15,9 @@ export interface Settings {
 
 const DEFAULTS: Settings = {
   comfyui_url: 'http://127.0.0.1:8188',
-  llm_provider: 'yuanbao',
+  llm_provider: 'qwen',
   llm_api_key: '',
-  llm_model: 'yuanbao-deep-think',
+  llm_model: 'qwen-max',
   llm_deep_think: true,
   output_dir: './storage/输出',
   reference_dir: './storage/参考图库',
