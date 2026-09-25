@@ -1,4 +1,4 @@
-const BASE = '/api';
+import { api } from './config';
 
 export interface Reference {
   id: string;
@@ -27,12 +27,12 @@ export interface FeatureCard {
 }
 
 export async function fetchReferences(): Promise<Reference[]> {
-  const res = await fetch(`${BASE}/references`);
+  const res = await fetch(api('/references'));
   return res.json();
 }
 
 export async function fetchReference(id: string): Promise<Reference> {
-  const res = await fetch(`${BASE}/references/${id}`);
+  const res = await fetch(api(`/references/${id}`));
   if (!res.ok) throw new Error('Not found');
   return res.json();
 }
@@ -40,17 +40,17 @@ export async function fetchReference(id: string): Promise<Reference> {
 export async function uploadReference(file: File): Promise<Reference> {
   const form = new FormData();
   form.append('file', file);
-  const res = await fetch(`${BASE}/references/upload`, { method: 'POST', body: form });
+  const res = await fetch(api('/references/upload'), { method: 'POST', body: form });
   if (!res.ok) throw new Error('Upload failed');
   return res.json();
 }
 
 export async function deleteReference(id: string): Promise<void> {
-  await fetch(`${BASE}/references/${id}`, { method: 'DELETE' });
+  await fetch(api(`/references/${id}`), { method: 'DELETE' });
 }
 
 export async function saveFeatureCard(id: string, card: FeatureCard): Promise<Reference> {
-  const res = await fetch(`${BASE}/references/${id}/feature-card`, {
+  const res = await fetch(api(`/references/${id}/feature-card`), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(card),

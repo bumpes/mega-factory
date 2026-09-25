@@ -1,4 +1,4 @@
-const BASE = '/api';
+import { api } from './config';
 
 export interface Task {
   id: string;
@@ -27,22 +27,22 @@ export interface TaskParams {
 }
 
 export async function fetchTasks(): Promise<Task[]> {
-  const res = await fetch(`${BASE}/tasks`);
+  const res = await fetch(api('/tasks'));
   return res.json();
 }
 
 export async function fetchTask(id: string): Promise<Task> {
-  const res = await fetch(`${BASE}/tasks/${id}`);
+  const res = await fetch(api(`/tasks/${id}`));
   return res.json();
 }
 
 export async function fetchTaskImages(taskId: string): Promise<TaskImage[]> {
-  const res = await fetch(`${BASE}/tasks/${taskId}/images`);
+  const res = await fetch(api(`/tasks/${taskId}/images`));
   return res.json();
 }
 
 export async function createTask(params: TaskParams): Promise<{ task: Task; images: TaskImage[] }> {
-  const res = await fetch(`${BASE}/tasks`, {
+  const res = await fetch(api('/tasks'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params),
@@ -55,9 +55,9 @@ export async function createTask(params: TaskParams): Promise<{ task: Task; imag
 }
 
 export async function cancelTask(id: string): Promise<void> {
-  await fetch(`${BASE}/tasks/${id}/cancel`, { method: 'POST' });
+  await fetch(api(`/tasks/${id}/cancel`), { method: 'POST' });
 }
 
 export async function retryImage(imageId: string): Promise<void> {
-  await fetch(`${BASE}/task-images/${imageId}/retry`, { method: 'POST' });
+  await fetch(api(`/task-images/${imageId}/retry`), { method: 'POST' });
 }

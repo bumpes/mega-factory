@@ -1,4 +1,4 @@
-const BASE = '/api';
+import { api } from './config';
 
 export interface GalleryTree {
   creationName: string;
@@ -22,25 +22,25 @@ export interface GalleryImage {
 }
 
 export async function fetchGalleryTree(): Promise<GalleryTree[]> {
-  const res = await fetch(`${BASE}/gallery`);
+  const res = await fetch(api('/gallery'));
   return res.json();
 }
 
 export async function fetchGalleryBatch(creationName: string, date: string): Promise<GalleryBatch> {
-  const res = await fetch(`${BASE}/gallery/${encodeURIComponent(creationName)}/${date}`);
+  const res = await fetch(api(`/gallery/${encodeURIComponent(creationName)}/${date}`));
   if (!res.ok) throw new Error('Batch not found');
   return res.json();
 }
 
 export async function fetchGalleryText(creationName: string, date: string, filename: string): Promise<string> {
-  const res = await fetch(`${BASE}/gallery/${encodeURIComponent(creationName)}/${date}/${filename}`);
+  const res = await fetch(api(`/gallery/${encodeURIComponent(creationName)}/${date}/${filename}`));
   if (!res.ok) throw new Error('File not found');
   const data = await res.json();
   return data.content;
 }
 
 export async function downloadZip(paths: string[]): Promise<void> {
-  const res = await fetch(`${BASE}/gallery/zip`, {
+  const res = await fetch(api('/gallery/zip'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ paths }),

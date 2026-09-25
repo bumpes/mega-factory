@@ -1,4 +1,4 @@
-const BASE = '/api';
+import { api } from './config';
 
 export interface DashboardData {
   comfyStatus: 'online' | 'offline';
@@ -11,6 +11,6 @@ export interface DashboardData {
 }
 
 export async function fetchDashboard(): Promise<DashboardData> {
-  const res = await fetch(`${BASE}/dashboard`);
+  const res = await fetch(api('/dashboard'));
   return res.json();
 }

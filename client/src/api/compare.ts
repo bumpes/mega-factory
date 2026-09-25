@@ -1,4 +1,4 @@
-const BASE = '/api';
+import { api } from './config';
 
 export interface ScoreCard {
   feat_scale: number;
@@ -26,14 +26,14 @@ export interface Comparison {
 
 export async function fetchHistory(creationId?: string): Promise<Comparison[]> {
   const url = creationId
-    ? `${BASE}/compare/history?creationId=${encodeURIComponent(creationId)}`
-    : `${BASE}/compare/history`;
+    ? `${api('/compare/history')}?creationId=${encodeURIComponent(creationId)}`
+    : api('/compare/history');
   const res = await fetch(url);
   return res.json();
 }
 
 export async function fetchComparison(id: string): Promise<Comparison> {
-  const res = await fetch(`${BASE}/compare/${id}`);
+  const res = await fetch(api(`/compare/${id}`));
   if (!res.ok) throw new Error('Not found');
   return res.json();
 }
@@ -46,7 +46,7 @@ export async function createComparison(params: {
   scoreB: ScoreCard;
   note: string;
 }): Promise<Comparison> {
-  const res = await fetch(`${BASE}/compare`, {
+  const res = await fetch(api('/compare'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params),
@@ -56,18 +56,18 @@ export async function createComparison(params: {
 }
 
 export async function pickRefRandom(): Promise<{ ref: unknown }> {
-  const res = await fetch(`${BASE}/compare/pick-ref/random`);
+  const res = await fetch(api('/compare/pick-ref/random'));
   return res.json();
 }
 
 export async function prefillFromCard(refId: string): Promise<ScoreCard> {
-  const res = await fetch(`${BASE}/compare/prefill/${refId}`);
+  const res = await fetch(api(`/compare/prefill/${refId}`));
   if (!res.ok) throw new Error('Not found');
   return res.json();
 }
 
 export async function computeDiff(scoreA: ScoreCard, scoreB: ScoreCard): Promise<Record<string, number>> {
-  const res = await fetch(`${BASE}/compare/compute-diff`, {
+  const res = await fetch(api('/compare/compute-diff'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ scoreA, scoreB }),

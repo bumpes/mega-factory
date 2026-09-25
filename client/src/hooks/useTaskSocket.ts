@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
+import { getWsUrl } from '../api/config';
 
 export interface WsEvent {
   event: string;
@@ -14,8 +15,7 @@ export function useTaskSocket(onEvent?: (e: WsEvent) => void) {
   const connect = useCallback(() => {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    const wsUrl = getWsUrl();
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => setConnected(true);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { api, getApiBase, setApiBase } from '../api/config';
 
 interface Settings {
   comfyui_url: string;
@@ -15,12 +16,12 @@ interface Settings {
 }
 
 async function fetchSettings(): Promise<Settings> {
-  const res = await fetch('/api/settings');
+  const res = await fetch(api('/settings'));
   return res.json();
 }
 
 async function saveSettings(settings: Partial<Settings>): Promise<void> {
-  await fetch('/api/settings', {
+  await fetch(api('/settings'), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(settings),
@@ -28,17 +29,17 @@ async function saveSettings(settings: Partial<Settings>): Promise<void> {
 }
 
 async function testComfy(): Promise<{ ok: boolean; error?: string }> {
-  const res = await fetch('/api/settings/test-comfy');
+  const res = await fetch(api('/settings/test-comfy'));
   return res.json();
 }
 
 async function testLLM(): Promise<{ ok: boolean; error?: string }> {
-  const res = await fetch('/api/settings/test-llm');
+  const res = await fetch(api('/settings/test-llm'));
   return res.json();
 }
 
 async function fetchLanAddresses(): Promise<string[]> {
-  const res = await fetch('/api/network/lan-addresses');
+  const res = await fetch(api('/network/lan-addresses'));
   const data = await res.json();
   return data.addresses || [];
 }
@@ -52,6 +53,9 @@ export default function SettingsPage() {
   const [llmError, setLlmError] = useState('');
   const [lanAddresses, setLanAddresses] = useState<string[]>([]);
   const [qrSvg, setQrSvg] = useState<string>('');
+
+  const [backendUrl, setBackendUrl] = useState(getApiBase());
+  const [backendSaved, setBackendSaved] = useState(false);
 
   const { data: settings } = useQuery({
     queryKey: ['settings'],
@@ -69,7 +73,7 @@ export default function SettingsPage() {
   useEffect(() => {
     if (lanAddresses.length > 0) {
       const url = `http://${lanAddresses[0]}:3000`;
-      fetch(`/api/network/qrcode?url=${encodeURIComponent(url)}`)
+      fetch(api(`/network/qrcode?url=${encodeURIComponent(url)}`))
         .then((res) => res.text())
         .then(setQrSvg)
         .catch(() => {});
@@ -122,6 +126,30 @@ export default function SettingsPage() {
   return (
     <div className="max-w-2xl space-y-6">
       <h2 className="text-2xl font-bold">设置</h2>
+
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold border-b border-gray-700 pb-2">后端连接</h3>
+        <div>
+          <label className="block text-sm text-gray-400 mb-1">后端地址</label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={backendUrl}
+              onChange={(e) => { setBackendUrl(e.target.value); setBackendSaved(false); }}
+              className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white"
+              placeholder="留空使用同源，或输入 https://your-tunnel-url"
+            />
+            <button
+              onClick={() => { setApiBase(backendUrl); setBackendSaved(true); }}
+              className="px-4 py-2 bg-green-600 rounded hover:bg-green-700"
+            >
+              连接
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">本地使用留空即可；远程访问需填入后端隧道地址（如 cloudflared / ngrok）</p>
+          {backendSaved && <p className="text-green-400 text-sm mt-1">● 已更新，页面将使用新地址</p>}
+        </div>
+      </section>
 
       <section className="space-y-4">
         <h3 className="text-lg font-semibold border-b border-gray-700 pb-2">ComfyUI</h3>
