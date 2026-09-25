@@ -79,7 +79,7 @@ export function buildWorkflow(template: Record<string, unknown>, prompt: string,
 }
 
 export function loadWorkflowTemplate(): Record<string, unknown> {
-  const templatePath = path.resolve(__dirname, '../../workflows/qwen_image_edit.json');
+  const templatePath = path.resolve(import.meta.dirname, '../../workflows/qwen_image_edit.json');
   const content = fs.readFileSync(templatePath, 'utf-8');
   return JSON.parse(content);
 }
